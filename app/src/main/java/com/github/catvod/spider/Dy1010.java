@@ -188,8 +188,6 @@ public class Dy1010 extends Spider {
     public String categoryContent(String tid, String pg, boolean filter, HashMap<String, String> extend) {
         try {
             String url = siteUrl + "/show/";
-            html=url;
-            html=jumpbtwaf(url,html);
             if (extend != null && extend.size() > 0 && extend.containsKey("tid") && extend.get("tid").length() > 0) {
                 url += extend.get("tid");
             } else {
@@ -288,8 +286,6 @@ public class Dy1010 extends Spider {
         try {
             // 视频详情url
             String url = siteUrl + "/detail/" + ids.get(0) + "/";
-            html=url;
-            html=jumpbtwaf(url,html);
             Document doc = Jsoup.parse(OkHttpUtil.string(url, getHeaders(url)));
             JSONObject result = new JSONObject();
             JSONObject vodList = new JSONObject();
@@ -435,11 +431,7 @@ public class Dy1010 extends Spider {
             headers.put("Connection", " close");
             // 播放页 url
             String url = siteUrl + "/play/" + id + "/";
-            html=url;
-            html=OkHttpUtil.string(url, getHeaders(url));
-            html=jumpbtwaf(url,html);
-            Document doc = Jsoup.parse(html);
-//            Document doc = Jsoup.parse(OkHttpUtil.string(url, getHeaders(url)));
+            Document doc = Jsoup.parse(OkHttpUtil.string(url, getHeaders(url)));
             Elements allScript = doc.select("script");
             JSONObject result = new JSONObject();
             for (int i = 0; i < allScript.size(); i++) {
