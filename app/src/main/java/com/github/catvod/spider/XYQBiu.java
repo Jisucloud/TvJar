@@ -258,7 +258,7 @@ public class XYQBiu extends Spider {
             }else{
             OkHttpUtil.post(OkHttpUtil.defaultClient(), posturl, null, getHeaders(posturl), callBack);
             }
-             html = convertUnicodeToCh(callBack.getResult().replaceAll("\r|\n", ""));
+             html = jumpbtwaf(convertUnicodeToCh(callBack.getResult().replaceAll("\r|\n", "")),html);
  //            btwatUrl = posturl;
              }else{
              html = jumpbtwaf(convertUnicodeToCh(fetch(webUrl)),html);
@@ -422,7 +422,7 @@ public class XYQBiu extends Spider {
             } else {
             //非直接播放
             String html = fetch(webUrl).trim();
-            html = jumpbtwaf(html,convertUnicodeToCh(fetch(webUrl)));//5秒盾
+//            html = jumpbtwaf(html,convertUnicodeToCh(fetch(webUrl)));//5秒盾
             html = convertUnicodeToCh(html);
             String parseContent = html;
             boolean bfshifouercijiequ = getRuleVal("list_YN_twice").equals("1");
