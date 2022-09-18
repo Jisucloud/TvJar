@@ -152,12 +152,12 @@ public class XYQBiu extends Spider {
         }
         headers.put("User-Agent", ua);
 
-        if (!getRuleVal("Referer").isEmpty()){
-           String webref = getRuleVal("Referer").trim();
-             if (webref.startsWith("http")) {
-              headers.put("Referer", webref);
-             }
-        }
+//        if (!getRuleVal("Referer").isEmpty()){
+//           String webref = getRuleVal("Referer").trim();
+//             if (webref.startsWith("http")) {
+//              headers.put("Referer", webref);
+//             }
+        
         return headers;
     }
 
