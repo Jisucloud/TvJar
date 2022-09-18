@@ -228,7 +228,7 @@ public class XYQBiu extends Spider {
             }
             //筛选结束
             String html = null;
- //           String btwatUrl = "";
+//            String btwatUrl = "";
             //取网页
             if(webUrl.contains(";post")){
             OKCallBack.OKCallBackString callBack = new OKCallBack.OKCallBackString() {
@@ -261,7 +261,8 @@ public class XYQBiu extends Spider {
              html = convertUnicodeToCh(callBack.getResult().replaceAll("\r|\n", ""));
  //            btwatUrl = posturl;
              }else{
-             html = jumpbtwaf(html,convertUnicodeToCh(fetch(webUrl)));
+             html = jumpbtwaf(convertUnicodeToCh(fetch(webUrl)),html);
+//             html = convertUnicodeToCh(fetch(webUrl));
  //            btwatUrl = webUrl;
             }
             
@@ -421,9 +422,8 @@ public class XYQBiu extends Spider {
             } else {
             //非直接播放
             String html = fetch(webUrl).trim();
-            html = jumpbtwaf(html,convertUnicodeToCh(fetch(webUrl)));
-//            html = jumpbtwaf(webUrl,html);//5秒盾
-//            html = convertUnicodeToCh(html);
+            html = jumpbtwaf(html,convertUnicodeToCh(fetch(webUrl)));//5秒盾
+            html = convertUnicodeToCh(html);
             String parseContent = html;
             boolean bfshifouercijiequ = getRuleVal("list_YN_twice").equals("1");
             if (bfshifouercijiequ) {
