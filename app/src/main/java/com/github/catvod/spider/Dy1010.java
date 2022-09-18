@@ -61,18 +61,18 @@ public class Dy1010 extends Spider {
     }
 
     private static String btcookie="";
-    private String jumpbtwaf(String webUrl, String html) {
+    private String jumpbtwaf(String siteUrl, String html) {
         for (int i = 0; i < 3; i++) {
             if (html.contains("在访问之前") && html.contains("五秒")) {
                 Map<String, List<String>> cookies = new HashMap<>();
-                OkHttpUtil.string(webUrl, getHeaders(webUrl), cookies);
+                OkHttpUtil.string(siteUrl, getHeaders(siteUrl), cookies);
                 for (Map.Entry<String, List<String>> entry : cookies.entrySet()) {
                     if (entry.getKey().equals("set-cookie") || entry.getKey().equals("Set-Cookie")) {
                         btcookie = TextUtils.join(";", entry.getValue());
                         break;
                     }
                 }
-                html = convertUnicodeToCh(webUrl);
+                html = convertUnicodeToCh(siteUrl);
             }
             if (!html.contains("在访问之前") && !html.contains("五秒")) {
                 return html;
@@ -121,6 +121,7 @@ public class Dy1010 extends Spider {
     @Override
     public String homeContent(boolean filter) {
         try {
+//            Document doc = Jsoup.parse(OkHttpUtil.string(siteUrl, getHeaders(siteUrl)));
             String html=OkHttpUtil.string(siteUrl, getHeaders(siteUrl));
             html=jumpbtwaf(siteUrl,html);
             Document doc = Jsoup.parse(html);
