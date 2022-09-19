@@ -446,6 +446,19 @@ public class Cokemv extends Spider {
         headers.put("Accept-Language", "zh-SG,zh;q=0.9,en-GB;q=0.8,en;q=0.7,zh-CN;q=0.6");
         return headers;
     }
+    
+    protected void getCookie(){
+        cookie="";
+        String cookieurl="https://cokemv.me/zzzzz";
+        Map<String, List<String>> cookies = new HashMap<>();
+        OkHttpUtil.string(cookieurl,getHeaders(cookieurl,""),cookies);
+        for( Map.Entry<String, List<String>> entry : cookies.entrySet() ){
+            if(entry.getKey().equals("set-cookie")){
+                cookie = TextUtils.join(";",entry.getValue());
+                break;
+            }
+        }
+    }
 
     @Override
     public String searchContent(String key, boolean quick) {
