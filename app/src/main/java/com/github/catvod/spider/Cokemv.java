@@ -464,15 +464,15 @@ public class Cokemv extends Spider {
                         continue;
                     }
                     if (sourceName.contains(key)) {
-                        Document ddrklink = Jsoup.parse(OkHttpUtil.string(list1, getHeaders2(list1,referer)));
+                        Document link = Jsoup.parse(OkHttpUtil.string(list1, getHeaders2(list1,referer)));
                         JSONObject v = new JSONObject();
                     String id =list1.replace("https://cokemv.me","");
-                        String cover = ddrklink.selectFirst("div.module-item-pic>img").attr("data-original");
-                        String title = ddrklink.selectFirst("div.module-item-pic>img").attr("alt");
-//                        String remark = ddrklink.selectFirst("div.module-info-item-content").get(4).text();
+                        String cover = link.select("div.module-item-pic>img").attr("data-original");
+                        String title = link.select("div.module-item-pic>img").attr("alt");
+                        String remark = link.select("div.module-info-item-content").get(4).text();
 
                         v.put("vod_name", title);
-                        v.put("vod_remarks", "");
+                        v.put("vod_remarks", remark);
                         v.put("vod_id", id);
                         v.put("vod_pic", cover);
                         videos.put(v);
