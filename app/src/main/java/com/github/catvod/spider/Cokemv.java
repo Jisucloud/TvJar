@@ -428,7 +428,7 @@ public class Cokemv extends Spider {
     
     protected HashMap<String, String> getHeaders2(String url,String ref) {
         HashMap<String, String> headers = new HashMap<>();
-        headers.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.62 Safari/537.36"");
+        headers.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.62 Safari/537.36");
         if(!ref.equals("google")){
             headers.put("Authority", "cokemv.me");
             if(ref.length()>0){
@@ -442,7 +442,7 @@ public class Cokemv extends Spider {
                 headers.put("Cookie", cookie);
             }
         }
-        headers.put("Accept-Language", "zh-SG,zh;q=0.9,en-GB;q=0.8,en;q=0.7,zh-CN;q=0.6);
+        headers.put("Accept-Language", "zh-SG,zh;q=0.9,en-GB;q=0.8,en;q=0.7,zh-CN;q=0.6");
         return headers;
     }
 
