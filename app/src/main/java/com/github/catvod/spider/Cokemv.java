@@ -417,12 +417,32 @@ public class Cokemv extends Spider {
         return "";
     }
 
-    protected static HashMap<String, String> sHeaders() {
+//    protected static HashMap<String, String> sHeaders() {
+//        HashMap<String, String> headers = new HashMap<>();
+//        headers.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.62 Safari/537.36");
+//        headers.put("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9");
+//        headers.put("Accept-encoding", "gzip, deflate, br");
+//        headers.put("Accept-language", "zh-SG,zh;q=0.9,en-GB;q=0.8,en;q=0.7,zh-CN;q=0.6");
+ //       return headers;
+ //   }
+    
+    protected HashMap<String, String> getHeaders2(String url,String ref) {
         HashMap<String, String> headers = new HashMap<>();
-        headers.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.62 Safari/537.36");
-        headers.put("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9");
-        headers.put("Accept-encoding", "gzip, deflate, br");
-        headers.put("Accept-language", "zh-SG,zh;q=0.9,en-GB;q=0.8,en;q=0.7,zh-CN;q=0.6");
+        headers.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.62 Safari/537.36"");
+        if(!ref.equals("google")){
+            headers.put("Authority", "cokemv.me");
+            if(ref.length()>0){
+                if(ref.equals("origin")){
+                    headers.put("Origin", "https://cokemv.me");
+                } else {
+                    headers.put("Referer", ref);
+                }
+            }
+            if(cookie.length()>0){
+                headers.put("Cookie", cookie);
+            }
+        }
+        headers.put("Accept-Language", "zh-SG,zh;q=0.9,en-GB;q=0.8,en;q=0.7,zh-CN;q=0.6);
         return headers;
     }
 
@@ -430,28 +450,29 @@ public class Cokemv extends Spider {
     public String searchContent(String key, boolean quick) {
         try {
             String url = "https://www.xn--flw351e.cf/search?q=site%3A" + siteHost + "+" + URLEncoder.encode(key);
-            Document docs = Jsoup.parse(OkHttpUtil.string(url, sHeaders()));
+            Document doc = Jsoup.parse(OkHttpUtil.string(url,getHeaders2(url,"google")));
             JSONObject result = new JSONObject();
             JSONArray videos = new JSONArray();
-            JSONObject v = new JSONObject();
-            Elements list = docs.select("div.NJo7tc div.yuRUbf");
-            for (int i = 0; i < list.size(); i++) {
-                Element doc = list.get(i);
-                String sourceName = doc.select("div.yuRUbf a h3").text();
-                if (sourceName.contains(key)) {
-                    String list1 = doc.select("div.yuRUbf a").attr("href");
-                    Document link = Jsoup.parse(OkHttpUtil.string(list1, getHeaders(url)));
-                    Matcher matcher = regexVid.matcher(list1);
-                    if (matcher.find()) {
-
-                        String group = matcher.group(1);
-                        String cover = link.select("div.module-item-pic>img").attr("data-original");
+            Elements sourceList = doc.select("div.yuRUbf a");
+            if(sourceList.size()>0){
+                for (int i = 0; i < 1; i++) {
+                    Element sourcess = sourceList.get(i);
+                    String sourceName = sourcess.select("h3.LC20lb.MBeuO.DKV0Md").text();
+                    String list1 = sourcess.attr("href");
+                    if(list1.contains("/s/")||list1.contains("play")||list1.contains("performer")||list1.contains("search")||list1.contains("jsessionid")){
+                        continue;
+                    }
+                    if (sourceName.contains(key)) {
+                        Document ddrklink = Jsoup.parse(OkHttpUtil.string(list1, getHeaders(list1,referer)));
+                        JSONObject v = new JSONObject();
+                    String id =list1.replace("https://cokemv.me","");
+                        String cover = ddrklink.selectFirst("div.module-item-pic>img").attr("data-original");
                         String title = link.select("div.module-item-pic>img").attr("alt");
-                        String remark = link.select("div.module-info-item-content").get(4).text();
+                        String remark = ddrklink.selectFirst("div.module-info-item-content").get(4).text();
 
                         v.put("vod_name", title);
                         v.put("vod_remarks", remark);
-                        v.put("vod_id", group);
+                        v.put("vod_id", id);
                         v.put("vod_pic", cover);
                         videos.put(v);
                     }
