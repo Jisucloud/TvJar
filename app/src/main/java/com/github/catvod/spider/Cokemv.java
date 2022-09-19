@@ -450,30 +450,29 @@ public class Cokemv extends Spider {
     @Override
     public String searchContent(String key, boolean quick) {
         try {
-            String url = "https://www.xn--flw351e.cf/search?q=site%3A" + siteHost + "+" + URLEncoder.encode(key);
-            Document doc = Jsoup.parse(OkHttpUtil.string(url,getHeaders2(url,"google")));
+            String url = "https://www.xn--flw351e.cf/search?q=site%3Acokemv.me%2Fvoddetail+" + URLEncoder.encode(key);
+            Document docs = Jsoup.parse(OkHttpUtil.string(url, getHeaders2(url,"google")));
             JSONObject result = new JSONObject();
             JSONArray videos = new JSONArray();
-            Elements sourceList = doc.select("div.yuRUbf a");
-            if(sourceList.size()>0){
-                for (int i = 0; i < 1; i++) {
-                    Element sourcess = sourceList.get(i);
-                    String sourceName = sourcess.select("h3.LC20lb.MBeuO.DKV0Md").text();
-                    String list1 = sourcess.attr("href");
-                    if(list1.contains("/s/")||list1.contains("play")||list1.contains("performer")||list1.contains("search")||list1.contains("jsessionid")){
-                        continue;
-                    }
-                    if (sourceName.contains(key)) {
-                        Document link = Jsoup.parse(OkHttpUtil.string(list1, getHeaders2(list1,referer)));
-                        JSONObject v = new JSONObject();
-                    String id =list1.replace("https://cokemv.me","");
+            JSONObject v = new JSONObject();
+            Elements list = docs.select("div.NJo7tc div.yuRUbf");
+            for (int i = 0; i < list.size(); i++) {
+                Element doc = list.get(i);
+                String sourceName = doc.select("div.yuRUbf a h3").text();
+                if (sourceName.contains(key)) {
+                    String list1 = doc.select("div.yuRUbf a").attr("href");
+                    Document link = Jsoup.parse(OkHttpUtil.string(list1, getHeaders(url)));
+                    Matcher matcher = regexVid.matcher(list1);
+                    if (matcher.find()) {
+
+                        String group = matcher.group(1);
                         String cover = link.select("div.module-item-pic>img").attr("data-original");
                         String title = link.select("div.module-item-pic>img").attr("alt");
                         String remark = link.select("div.module-info-item-content").get(4).text();
 
                         v.put("vod_name", title);
                         v.put("vod_remarks", remark);
-                        v.put("vod_id", id);
+                        v.put("vod_id", group);
                         v.put("vod_pic", cover);
                         videos.put(v);
                     }
