@@ -31,6 +31,7 @@ import okhttp3.Headers;
 public class Cokemv extends Spider {
     private static final String siteUrl = "https://cokemv.me";
     private static final String siteHost = "cokemv.me";
+    private String cookie="";
 
     /**
      * 播放源配置
@@ -467,7 +468,7 @@ public class Cokemv extends Spider {
                         JSONObject v = new JSONObject();
                     String id =list1.replace("https://cokemv.me","");
                         String cover = ddrklink.selectFirst("div.module-item-pic>img").attr("data-original");
-                        String title = link.select("div.module-item-pic>img").attr("alt");
+                        String title = ddrklink.selectFirst("div.module-item-pic>img").attr("alt");
                         String remark = ddrklink.selectFirst("div.module-info-item-content").get(4).text();
 
                         v.put("vod_name", title);
