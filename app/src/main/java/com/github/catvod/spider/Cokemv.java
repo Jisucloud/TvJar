@@ -451,7 +451,7 @@ public class Cokemv extends Spider {
         cookie="";
         String cookieurl="https://cokemv.me/zzzzz";
         Map<String, List<String>> cookies = new HashMap<>();
-        OkHttpUtil.string(cookieurl,getHeaders(cookieurl,""),cookies);
+        OkHttpUtil.string(cookieurl,getHeaders2(cookieurl,""),cookies);
         for( Map.Entry<String, List<String>> entry : cookies.entrySet() ){
             if(entry.getKey().equals("set-cookie")){
                 cookie = TextUtils.join(";",entry.getValue());
