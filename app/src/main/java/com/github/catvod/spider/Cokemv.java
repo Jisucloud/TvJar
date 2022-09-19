@@ -430,7 +430,7 @@ public class Cokemv extends Spider {
     public String searchContent(String key, boolean quick) {
         try {
             String url = "https://www.xn--flw351e.cf/search?q=site%3A" + siteHost + "+" + URLEncoder.encode(key);
-            Document docs = Jsoup.parse(OkHttpUtil.string(url, sHeaders(),"google"));
+            Document docs = Jsoup.parse(OkHttpUtil.string(url, sHeaders()));
             JSONObject result = new JSONObject();
             JSONArray videos = new JSONArray();
             JSONObject v = new JSONObject();
